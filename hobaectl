@@ -1,10 +1,7 @@
 #!/bin/bash
 # hobaectl 스크립트 파일
 
-if [[ "$1" == "cd" && "$2" == "intin" ]]; then
-    cd /Users/intin_hobae/Desktop/INTIN
-#해당 내용은 터미널과 해당 스크립트의 프로세스가 다르기 때문에 변경이 되지 않음.
-elif [[ "$1" == "wtf" ]]; then
+if [[ "$1" == "wtf" ]]; then
     echo "Do you have a lot of money? Are you not going to buy a house? Are you not going to get married?"
 elif [[ "$1" == "--help" ]]; then
     echo "yes i will help you"
