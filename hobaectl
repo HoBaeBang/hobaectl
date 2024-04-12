@@ -1,0 +1,31 @@
+#!/bin/bash
+# hobaectl 스크립트 파일
+
+if [[ "$1" == "cd" && "$2" == "intin" ]]; then
+    cd /Users/intin_hobae/Desktop/INTIN
+#해당 내용은 터미널과 해당 스크립트의 프로세스가 다르기 때문에 변경이 되지 않음.
+elif [[ "$1" == "wtf" ]]; then
+    echo "Do you have a lot of money? Are you not going to buy a house? Are you not going to get married?"
+elif [[ "$1" == "--help" ]]; then
+    echo "yes i will help you"
+elif [[ "$1" == "ls" ]]; then
+    # 'ls' 명령어 실행
+    ls
+elif [[ "$1" == "free" ]]; then
+    # OS 탐지
+    case "$(uname -s)" in
+        Linux*)     free ;;
+        Darwin*)    vm_stat ;; # macOS에서는 vm_stat을 사용할 수 있습니다.
+        # 다른 OS에 대한 처리를 여기에 추가할 수 있습니다.
+        *)          echo "Unsupported OS for free command" ;;
+    esac
+elif [[ "$1" == "info" ]]; then
+    if [[ "$(uname -s)" == "Darwin" ]]; then
+        system_profiler SPHardwareDataType 
+        sysctl hw.ncpu
+    fi
+else
+    echo "Unknown command: $1"
+    echo "Use '--help' for command information."
+fi
+
