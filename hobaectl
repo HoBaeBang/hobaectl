@@ -18,9 +18,40 @@ elif [[ "$1" == "free" ]]; then
     esac
 elif [[ "$1" == "info" ]]; then
     if [[ "$(uname -s)" == "Darwin" ]]; then
-        system_profiler SPHardwareDataType 
-        sysctl hw.ncpu
+        system_profiler SPHardwareDataType
+	echo "cpu_cores : " 
+        sysctl hw.ncpu | sed 's/^/\t\t/'
+	echo "ip_info_interior"
+	ifconfig | grep inet -w
+	echo "ip_info_external"
+	ip=$(curl -s ifconfig.me)
+	echo -e "\t${ip}"
     fi
+elif [[ "$1" == "infra" ]]; then    #ubuntu에서 프리티어 사용시 메모리 증가를위해서 swap 설정 1GRam일경우 2G까지 swap 진행
+    if [[ "$2" == "swap" ]]; then
+        sudo fallocate -l 2G /swapfile
+        sudo chmod 600 /swapfile
+        sudo mkswap /swapfile
+        sudo swapon /swapfile
+        echo /swapfile swap swap defaults 0 0 >> /etc/fstab
+        free
+
+elif [[ "$1" == "syscheck" ]]; then
+    if [[ "$(uname -s)" == "Darwin" ]]; then
+        #디스크 사용량 체크
+        echo "disk usage check : "  
+        df -h
+        #디스크 유틸리티 체크
+        echo "diskutils check : "
+        diskutil verifyVolume / | sed 's/^/\t\t/'  
+                
+
+        #시스템 로그 -최근 30분
+        log show --predicate 'eventMessage contains "error"' --last 30m 
+
+
+    fi
+
 else
     echo "Unknown command: $1"
     echo "Use '--help' for command information."
